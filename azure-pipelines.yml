@@ -2,8 +2,7 @@ trigger:
 - '*'
 
 pool:
-  vmImage: 'windows-2019'
- #replace if needed with name of your agent pool
+  Vmimage: 'Windows-2019' #replace if needed with name of your agent pool
 
 variables:
   buildConfiguration: 'Release'
@@ -35,23 +34,15 @@ steps:
   displayName: 'Restore project dependencies'
   inputs:
     command: 'restore'
-    projects: 'Tailspin.SpaceGame.Web/Tailspin.SpaceGame.Web.csproj'
+    projects: '**/*.csproj'
 
-- task: DotNetCoreCLI@2
-  displayName: 'Build the project - $(buildConfiguration)'
-  inputs:
-    command: 'build'
-    arguments: '--no-restore --configuration $(buildConfiguration)'
-    projects: 'Tailspin.SpaceGame.Web/Tailspin.SpaceGame.Web.csproj'
+- template: templates/build.yml
+  parameters:
+    buildConfiguration: 'Debug'
 
-- task: DotNetCoreCLI@2
-  displayName: 'Publish the project - $(buildConfiguration)'
-  inputs:
-    command: 'publish'
-    projects: 'Tailspin.SpaceGame.Web/Tailspin.SpaceGame.Web.csproj'
-    publishWebProjects: false
-    arguments: '--no-build --configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory)/$(buildConfiguration)'
-    zipAfterPublish: true
+- template: templates/build.yml
+  parameters:
+    buildConfiguration: 'Release'
 
 - task: PublishBuildArtifacts@1
   displayName: 'Publish Artifact: drop'
