@@ -34,13 +34,13 @@ steps:
   displayName: 'Restore project dependencies'
   inputs:
     command: 'restore'
-    projects: '**/*.csproj'
+    projects: 'Tailspin.SpaceGame.Web/Tailspin.SpaceGame.Web.csproj'
 
-- template: templates/build.yml
+- template: templates/Build.yml
   parameters:
     buildConfiguration: 'Debug'
 
-- template: templates/build.yml
+- template: templates/Build.yml
   parameters:
     buildConfiguration: 'Release'
 
